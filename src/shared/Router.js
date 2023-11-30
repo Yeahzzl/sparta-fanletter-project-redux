@@ -1,29 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "../Pages/Home";
-import Detail from "../Pages/Detail";
-import { useState } from "react";
+import MainPage from "../Pages/MainPage";
+import DetailPage from "../Pages/DetailPage";
+import Layout from "../components/Layout";
+import ProfilePage from "../Pages/ProfilePage";
+import LoginPage from "../Pages/LoginPage";
 
-const Router = ({ cardList, setCardList }) => {
-  const [click, setClick] = useState("");
-
+const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              cardList={cardList}
-              setCardList={setCardList}
-              click={click}
-              setClick={setClick}
-            />
-          }
-        />
-        <Route
-          path="/detail/:id"
-          element={<Detail cardList={cardList} setCardList={setCardList} />}
-        />
+        <Route element={<Layout />}>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/detail/:id" element={<DetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

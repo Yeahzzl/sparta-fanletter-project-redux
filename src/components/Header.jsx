@@ -1,47 +1,31 @@
 import React from "react";
 import { styled } from "styled-components";
 import bannerImg from "../assets/avengersImg.png";
+import { useDispatch, useSelector } from "react-redux";
+import { setCharacter } from "../redux/modules/characters";
 
-function Header({ click, setClick }) {
-  // const bannerImg = require("../assets/avengers.jpg");
+function Header() {
+  const activeCharacter = useSelector((state) => state.characters);
+  const dispatch = useDispatch();
 
-  /*
- // 버튼 클릭시 색상이 유지되게 하기
-  이거 실패였음...focus로 기능하고 있었던것..
-  const [click, setClick] = useState(0);
-  const getClick = () => {
-    setClick(!click);
+  const onActiveCharacter = (event) => {
+    if (event.target === event.currentTarget) return;
+    dispatch(setCharacter(event.target.textContent));
   };
-  <Tab className={click ? "active" : ""} onClick={getClick}>
-*/
 
+  const fanLettetBtn = () => {
+    dispatch(setCharacter(""));
+  };
   return (
     <Container>
       <Wrapper $image={bannerImg}></Wrapper>
       <Title>Avengers</Title>
-      <Contents onClick={() => setClick("")}>Fan Letter</Contents>
-      <TabBox>
-        <Tab $isClick={click === "토르"} onClick={() => setClick("토르")}>
-          토르
-        </Tab>
-        <Tab
-          $isClick={click === "블랙위도우"}
-          onClick={() => setClick("블랙위도우")}
-        >
-          블랙위도우
-        </Tab>
-        <Tab
-          $isClick={click === "캡틴아메리카"}
-          onClick={() => setClick("캡틴아메리카")}
-        >
-          캡틴아메리카
-        </Tab>
-        <Tab
-          $isClick={click === "닥터스트레인지"}
-          onClick={() => setClick("닥터스트레인지")}
-        >
-          닥터스트레인지
-        </Tab>
+      <Contents onClick={fanLettetBtn}>Fan Letter</Contents>
+      <TabBox onClick={onActiveCharacter}>
+        <Tab $isClick={activeCharacter}>토르</Tab>
+        <Tab $isClick={activeCharacter}>블랙위도우</Tab>
+        <Tab $isClick={activeCharacter}>캡틴아메리카</Tab>
+        <Tab $isClick={activeCharacter}>닥터스트레인지</Tab>
       </TabBox>
     </Container>
   );
@@ -50,7 +34,6 @@ function Header({ click, setClick }) {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  /* background-color: yellow; */
 `;
 
 const Wrapper = styled.div`
@@ -60,7 +43,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: orange; */
   background-size: 100%;
 `;
 const Title = styled.h1`
@@ -112,13 +94,15 @@ const Tab = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ $isClick }) => ($isClick ? "white" : "#282828")};
+  color: ${({ $isClick, children }) =>
+    $isClick === children ? "white" : "#282828"};
   margin: 15px;
   border: 2px solid #282828;
   border-radius: 100px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  background-color: ${({ $isClick }) => ($isClick ? "#282828" : "white")};
+  background-color: ${({ $isClick, children }) =>
+    $isClick === children ? "#282828" : "white"};
   &:hover {
     background-color: #282828;
     color: white;

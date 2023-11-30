@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
-
-// CardList에서 클릭한 카드의 id값을 전달
-// id값을 받아서 해당 카드를 Detail화면에 뿌림
-// nickname, content, createdat, writedto
+import { useSelector, useDispatch } from "react-redux";
+import { deleteLetter, editLetter } from "../redux/modules/fanLetters";
 
 // 삭제 확인 후 확인 메시지 띄우기
-function showAlert() {
-  alert("삭제되었습니다");
-}
-function CardDetail({ navigate, cardList, setCardList }) {
+// function showAlert() {
+//   alert("삭제되었습니다");
+// }
+function CardDetail() {
+  const dispatch = useDispatch();
+  const letters = useSelector((state) => state.fanletters);
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [isEdit, setIsEdit] = useState(false);
-  const clickData = cardList.find((item) => {
+  const clickData = letters.find((item) => {
     return item.id === id;
   });
-  console.log(clickData);
+  const [isEdit, setIsEdit] = useState(false);
   const [editText, setEditText] = useState(clickData ? clickData.content : "");
   function moveMain() {
     navigate("/");
@@ -24,19 +24,15 @@ function CardDetail({ navigate, cardList, setCardList }) {
   // 삭제 기능
   const deleteBtn = (id) => {
     // 삭제버튼 클릭시 취소, 확인 유효성 검사
-    //  window.confirm()은 선택적 메시지가 포함된 대화 상자를 표시하고 사용자가 대화 상자를 확인하거나 취소할 때까지 기다리도록 브라우저에 지시한다!
     const deleteCheck = window.confirm("정말로 삭제하시겠습니까?");
     if (deleteCheck) {
-      const setDelete = cardList.filter((item) => {
-        return item.id !== id;
-      });
-      // console.log(setDelete);
-      setCardList(setDelete);
+      dispatch(deleteLetter(id));
+      alert("삭제되었습니다");
+      // setCardList(setDelete);
     } else {
       return;
     }
-
-    setTimeout(() => showAlert(), 200);
+    // setTimeout(() => showAlert(), 200);
     // 확인버튼 클릭 후 메인화면으로 이동
     setTimeout(() => moveMain(), 200);
   };
@@ -46,20 +42,12 @@ function CardDetail({ navigate, cardList, setCardList }) {
     // 수정완료 버튼을 눌렀을때 확인창 띄우기
     const editCheck = window.confirm("수정을 완료하시겠습니까?");
     if (editCheck) {
-      // console.log(clickData[0].content);
       if (editText === clickData.content) {
         alert("수정사항이 없습니다");
         return;
       } else {
         setIsEdit(false);
-        const editCardList = cardList.map((editCard) => {
-          if (editCard.id === clickData.id) {
-            return { ...editCard, content: editText };
-          } else {
-            return editCard;
-          }
-        });
-        setCardList(editCardList);
+        dispatch(editLetter({ editText }));
       }
     }
   };
@@ -68,7 +56,7 @@ function CardDetail({ navigate, cardList, setCardList }) {
       <Container>
         {/* <Avatar>이미지</Avatar> */}
 
-        {cardList
+        {letters
           .filter((card) => {
             return card.id === id;
           })
@@ -100,11 +88,8 @@ function CardDetail({ navigate, cardList, setCardList }) {
                 <TextWrapper>
                   {isEdit ? (
                     <Text
-                      // disabled는 input에서 읽기전용으로 바꿔주는 것
-                      // disabled={isEdit === false ? true : false}
                       onChange={(event) => {
                         setEditText(event.target.value);
-                        // console.log(event.target.value);
                       }}
                       defaultValue={item.content}
                       maxLength={300}

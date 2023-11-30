@@ -1,24 +1,25 @@
 import React from "react";
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-// 삼항연산자 안에 삼항연산자를 사용하면서 .map 중복사용했었는데 filteredList를 따로 빼서 간결하게 수정하였다.
-function CardList({ click, cardList, setCardList, navigate }) {
-  // console.log(cardList);
-  let filteredList = cardList.filter((item) => {
-    //   console.log(item.id, item.writedto === click);
-    return item.writedto === click;
+function CardList() {
+  const navigate = useNavigate();
+  const activeCharacter = useSelector((state) => state.characters);
+  const letters = useSelector((state) => state.fanletters);
+  let filteredList = letters.filter((item) => {
+    return item.writedto === activeCharacter;
   });
-  if (click === "") {
-    filteredList = cardList;
+  if (activeCharacter === "") {
+    filteredList = letters;
   }
-  console.log(click);
 
   return (
     <Container>
       {filteredList.length === 0 ? (
         <Card>
           <BlankText>
-            🙅🏻‍♀️ 등록된 카드가 없습니다 🙅🏻‍♀️
+            🙅🏻‍♀️ {activeCharacter}에게 등록된 카드가 없습니다 🙅🏻‍♀️
             <br />
             💌 가장 먼저 카드를 카드를 등록해주세요! 💌
           </BlankText>
@@ -53,6 +54,7 @@ const Container = styled.div`
   flex-direction: column;
   border-top: 1px solid #545454;
   padding-top: 50px;
+  margin-bottom: 50px;
 `;
 
 const Card = styled.div`

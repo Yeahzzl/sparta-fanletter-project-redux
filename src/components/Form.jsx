@@ -2,11 +2,15 @@ import React from "react";
 import { styled } from "styled-components";
 import uuid from "react-uuid";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addLetter } from "../redux/modules/fanLetters";
 
-function Form({ cardList, setCardList }) {
+function Form() {
   const [character, setCharacter] = useState("");
   const [name, setName] = useState("");
   const [text, setText] = useState("");
+
+  const dispatch = useDispatch();
 
   const nameChangeHandler = (event) => {
     setName(event.target.value);
@@ -40,13 +44,11 @@ function Form({ cardList, setCardList }) {
       content: text,
       writedto: character,
       createdat: new Date().toISOString(),
-      // toISOString() 찾아보기!!
     };
-    // console.log(addCard);
-    // cardList를 펼쳐서 폼에 입력된 카드를 추가해줌
-    setCardList([...cardList, addCard]);
 
-    // 등록하기 버튼 클릭시 값 초기화
+    dispatch(addLetter(addCard));
+    // setCardList([...cardList, addCard]);
+
     setName("");
     setText("");
     setCharacter("");
