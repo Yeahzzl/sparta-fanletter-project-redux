@@ -56,9 +56,9 @@ const Title = styled.h1`
 `;
 
 const Contents = styled.button`
-  font-family: GmarketSansMedium;
-  font-size: 50px;
-  font-weight: 600;
+  font-family: Lemosty;
+  font-size: 60px;
+  font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -139,7 +139,7 @@ const Select = styled.select`
   width: 320px;
   height: 40px;
   padding: 10px;
-  border-radius: 50px;
+  border-radius: 10px;
   border-style: none;
 `;
 
@@ -147,7 +147,7 @@ const NameInput = styled.input`
   width: 300px;
   height: 30px;
   padding: 5px 10px;
-  border-radius: 50px;
+  border-radius: 10px;
   border-style: none;
 `;
 
@@ -156,7 +156,7 @@ const TextArea = styled.textarea`
   height: 150px;
   padding: 10px 10px;
   resize: none;
-  border-radius: 20px;
+  border-radius: 10px;
   border-style: none;
 `;
 
@@ -164,16 +164,16 @@ const Button = styled.button`
   width: 320px;
   height: 40px;
   margin-left: 60px;
-  border-radius: 50px;
+  border-radius: 10px;
   border-style: none;
   background-color: white;
   cursor: pointer;
   &:hover {
-    background-color: #ffa704;
+    background-color: #8458a6;
     color: white;
   }
   &:active {
-    background-color: #ffa704;
+    background-color: #8458a6;
     transform: scale(1.1);
     transition: all 0.3s;
   }

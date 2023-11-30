@@ -1,50 +1,106 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { styled } from "styled-components";
 
 function Login() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [loginToggle, setLoginToggle] = useState(true);
+  const [userId, setUserId] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const loginButtonHandler = () => {
+    setLoginToggle(!loginToggle);
+  };
+
+  const idChangeHandler = (e) => {
+    setUserId(e.target.value);
+  };
+
+  const passwordChangeHandler = (e) => {
+    setUserPassword(e.target.value);
+  };
+
+  const nicknameChangeHandler = (e) => {
+    setUserNickname(e.target.value);
+  };
+  // 회원가입
+  const onRegisterHandler = async () => {
+    const newUser = {
+      id: userId,
+      password: userPassword,
+      nickname: userNickname,
+    };
+    console.log(newUser);
+    const check = await axios.post(
+      "https://moneyfulpublicpolicy.co.kr/register",
+      newUser
+    );
+    console.log(check);
+  };
 
   return (
     <Container>
-      {isLogin ? (
-        <LoginContainer>
+      {loginToggle ? (
+        <LoginContainer onSubmit={onSubmit}>
           <LoginTitle>로그인</LoginTitle>
           <LoginWrap>
             <InputMemberInfo
+              value={userId}
               type="text"
               placeholder="아이디 최대 10자"
+              minLength={4}
               maxLength={10}
+              onChange={idChangeHandler}
             />
             <InputMemberInfo
+              value={userPassword}
               type="password"
               placeholder="비밀번호 최대 15자"
+              minLength={4}
               maxLength={15}
+              onChange={passwordChangeHandler}
             />
-            <LoginButton>Login</LoginButton>
-            <RegisterButton>Sign up</RegisterButton>
+            <LoginButton type="submit">Login</LoginButton>
+            <RegisterButton onClick={loginButtonHandler}>
+              Sign up
+            </RegisterButton>
           </LoginWrap>
         </LoginContainer>
       ) : (
-        <LoginContainer>
+        <LoginContainer onSubmit={onSubmit}>
           <LoginTitle>회원가입</LoginTitle>
           <LoginWrap>
             <InputMemberInfo
+              value={userId}
               type="text"
               placeholder="아이디 최대 10자"
+              minLength={4}
               maxLength={10}
+              onChange={idChangeHandler}
             />
             <InputMemberInfo
+              value={userPassword}
               type="password"
               placeholder="비밀번호 최대 15자"
+              minLength={4}
               maxLength={15}
+              onChange={passwordChangeHandler}
             />
             <InputMemberInfo
+              value={userNickname}
               type="text"
               placeholder="닉네임 최대 10자"
               maxLength={10}
+              onChange={nicknameChangeHandler}
             />
-            <LoginButton>Sign up</LoginButton>
-            <RegisterButton>Login</RegisterButton>
+            <LoginButton type="submit" onClick={onRegisterHandler}>
+              Sign up
+            </LoginButton>
+            <RegisterButton onClick={loginButtonHandler}>Login</RegisterButton>
           </LoginWrap>
         </LoginContainer>
       )}
@@ -52,7 +108,7 @@ function Login() {
   );
 }
 
-const Container = styled.form`
+const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #dedede;
@@ -61,7 +117,7 @@ const Container = styled.form`
   align-items: center;
 `;
 
-const LoginContainer = styled.div`
+const LoginContainer = styled.form`
   display: flex;
   justify-content: center;
   flex-direction: column;

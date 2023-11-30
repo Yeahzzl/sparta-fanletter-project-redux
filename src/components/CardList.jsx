@@ -21,7 +21,7 @@ function CardList() {
           <BlankText>
             🙅🏻‍♀️ {activeCharacter}에게 등록된 카드가 없습니다 🙅🏻‍♀️
             <br />
-            💌 가장 먼저 카드를 카드를 등록해주세요! 💌
+            💌 가장 먼저 카드를 등록해주세요! 💌
           </BlankText>
         </Card>
       ) : (
