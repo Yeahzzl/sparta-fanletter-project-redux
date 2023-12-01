@@ -1,21 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import defaultImg from "../assets/defaultImg.jpg";
+import axios from "axios";
+import { addLetter } from "../redux/modules/fanLetters";
 
 // 카드리스트 유저 닉네임 작성한 사람의 닉네임으로 나오게 수정하기(로그인한 유저로 다 바뀜..)
 
 function CardList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const activeCharacter = useSelector((state) => state.characters);
   const letters = useSelector((state) => state.fanletters);
-  const userNickname = useSelector((state) => state.auth.nickname);
+  // const userNickname = useSelector((state) => state.auth.nickname);
   let filteredList = letters.filter((item) => {
     return item.writedto === activeCharacter;
   });
   if (activeCharacter === "") {
     filteredList = letters;
   }
+
+  //추가된 letter 그려주기
+  useEffect(() => {
+    const fetchLetter = async () => {
+      const { data } = await axios.get("http://localhost:4000/newLetter");
+      console.log("data", data);
+      data.forEach((element) => {
+        dispatch(addLetter(element));
+      });
+    };
+    fetchLetter();
+  }, []);
 
   return (
     <Container>
@@ -28,19 +44,23 @@ function CardList() {
           </BlankText>
         </Card>
       ) : (
-        filteredList.map((card) => {
+        filteredList.map((letter) => {
           return (
             <Card
-              key={card.id}
               onClick={() => {
-                navigate(`/detail/${card.id}`);
+                navigate(`/detail/${letter.id}`);
                 // console.log(card.id);
               }}
             >
-              {/* <Avatar></Avatar> */}
-              <Name>{userNickname}</Name>
-              <Time>{card.createdat}</Time>
-              <Text>{card.content}</Text>
+              <NameProfile>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Nickname>{letter.nickname}</Nickname>
+                  <Time>{letter.createdAt}</Time>
+                  <Toletter>{letter.writedTo}</Toletter>
+                </div>
+                <Avatar $image={defaultImg}>{letter.avatar}</Avatar>
+              </NameProfile>
+              <Text>{letter.content}</Text>
             </Card>
           );
         })
@@ -65,9 +85,9 @@ const Card = styled.div`
   justify-content: center;
   flex-direction: column;
   color: #545454;
-  padding: 15px;
-  width: 600px;
-  height: 150px;
+  padding: 10px 20px;
+  width: 500px;
+  height: 160px;
   margin: 15px;
   background-color: white;
   border: 2px solid #545454;
@@ -83,18 +103,40 @@ const Card = styled.div`
     transition: all 0.3s;
   }
 `;
+const NameProfile = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+const Nickname = styled.p`
+  font-size: 20px;
+  margin: 5px 10px;
+  color: #8458a6;
+`;
 
-const Name = styled.p`
-  font-size: 22px;
-  margin: 10px;
+const Avatar = styled.image`
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
+  object-fit: cover;
+  background-image: url(${({ $image }) => $image});
 `;
+
 const Time = styled.p`
-  font-size: 15px;
-  margin: 7px;
+  font-size: 12px;
+  margin: 5px 10px;
 `;
+
+const Toletter = styled.p`
+  font-size: 12px;
+  margin: 5px 10px;
+`;
+
 const Text = styled.p`
   font-size: 15px;
   margin: 7px;
+  border-top: 1px solid #545454;
+  padding-top: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -105,11 +147,5 @@ const BlankText = styled.p`
   line-height: 35px;
   text-align: center;
 `;
-// const Avatar = styled.image`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 100px;
-//   background-color: black;
-// `;
 
 export default CardList;

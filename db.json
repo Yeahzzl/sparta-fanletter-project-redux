@@ -1,3 +1,13 @@
 {
-  "letters": []
+  "newLetter": [
+    {
+      "id": "71fb0d16-37ac-dc69-7347-e865cbdb764f",
+      "nickname": "안녕하세요",
+      "content": "\b삭제를 하고싶어요\n",
+      "avatar": "null",
+      "writedTo": "블랙위도우",
+      "createdAt": "Sat Dec 02 2023",
+      "userId": "helloworld"
+    }
+  ]
 }

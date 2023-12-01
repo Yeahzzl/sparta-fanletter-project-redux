@@ -1,59 +1,71 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import uuid from "react-uuid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLetter } from "../redux/modules/fanLetters";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function Form() {
   const [character, setCharacter] = useState("");
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
+  const [content, setContent] = useState("");
   const userNickname = useSelector((state) => state.auth.nickname);
+  const currentUserId = useSelector((state) => state.auth.userId);
+  const currentUserAvatar = useSelector((state) => state.auth.avatar);
 
   const dispatch = useDispatch();
 
   const textChangeHandler = (event) => {
-    setText(event.target.value);
+    setContent(event.target.value);
   };
 
-  const onSubmit = (e) => {
+  // letter 추가기능
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     // 유효성 검사
-    if (text === "") {
-      alert("내용을 입력해주세요");
+    if (content === "") {
+      toast.warning("내용을 입력해주세요");
       return;
     }
     if (character === "") {
-      alert("캐릭터를 선택해주세요");
+      toast.warning("캐릭터를 선택해주세요");
       return;
     }
 
-    // 폼에 입력되는 값
-    const addCard = {
+    const newLetter = {
       id: uuid(),
-      nickname: name,
-      content: text,
-      writedto: character,
-      createdat: new Date().toISOString(),
+      nickname: userNickname,
+      content,
+      avatar: currentUserAvatar,
+      writedTo: character,
+      createdAt: new Date().toDateString(),
+      userId: currentUserId,
     };
+    try {
+      await axios.post("http://localhost:4000/newLetter", newLetter);
+      dispatch(addLetter(newLetter));
 
-    dispatch(addLetter(addCard));
-    // setCardList([...cardList, addCard]);
-
-    setName("");
-    setText("");
-    setCharacter("");
+      setContent("");
+      setCharacter("");
+    } catch (error) {
+      console.error("Axios request failed:", error);
+    }
   };
 
   const choose = (e) => {
     setCharacter(e.target.value);
   };
 
+  // useEffect(() => {
+  //   fetchLetter();
+  // }, []);
+
   return (
     <Container>
-      <FormBox onSubmit={onSubmit}>
+      <FormBox onSubmit={onSubmitHandler}>
         <Section>
           <Span>캐릭터</Span>
           <Select value={character} onChange={choose}>
@@ -72,7 +84,7 @@ function Form() {
         <Section>
           <Span>내용</Span>
           <TextArea
-            value={text}
+            value={content}
             type="text"
             onChange={textChangeHandler}
             placeholder="최대 300자 까지 작성할 수 있습니다"
@@ -127,20 +139,25 @@ const Select = styled.select`
   width: 500px;
   height: 40px;
   padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #8458a6;
   font-family: GmarketSansMedium;
   font-size: 15px;
-  color: #8458a6;
+  color: #545454;
+  border: 1px solid #7f7f7f;
+  border-radius: 10px;
+  &:focus {
+    border-color: #8458a6;
+    outline: none;
+  }
 `;
 
 const NicknameInput = styled.p`
-  width: 480px;
+  width: 472px;
   height: 30px;
   line-height: 30px;
-  padding: 5px 10px;
+  color: #545454;
+  padding: 5px 13px;
   border-radius: 10px;
-  border: 1px solid #8458a6;
+  border: 1px solid #7f7f7f;
   background-color: white;
   font-family: GmarketSansMedium;
   font-size: 15px;
@@ -151,10 +168,14 @@ const TextArea = styled.textarea`
   height: 150px;
   padding: 10px 10px;
   resize: none;
-  border-radius: 10px;
-  border: 1px solid #8458a6;
   font-family: GmarketSansMedium;
   font-size: 15px;
+  border: 1px solid #7f7f7f;
+  border-radius: 10px;
+  &:focus {
+    border-color: #8458a6;
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
@@ -176,7 +197,7 @@ const Button = styled.button`
   &:active {
     background-color: #8458a6;
     color: white;
-    transform: scale(1.1);
+    transform: scale(1.05);
     transition: all 0.3s;
   }
 `;

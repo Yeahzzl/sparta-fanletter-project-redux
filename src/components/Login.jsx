@@ -62,7 +62,7 @@ function Login() {
       setUserPassword("");
       setUserNickname("");
     } catch (error) {
-      toast.error(error);
+      console.error("Axios request failed:", error);
     }
   };
 
@@ -91,7 +91,7 @@ function Login() {
       dispatch(login(loginResult.data));
       toast.success("로그인이 완료되었습니다");
     } catch (error) {
-      toast.error(error);
+      console.error("Axios request failed:", error);
     }
   };
 

@@ -3,6 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteLetter, editLetter } from "../redux/modules/fanLetters";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import defaultImg from "../assets/defaultImg.jpg";
 
 // 삭제 확인 후 확인 메시지 띄우기
 // function showAlert() {
@@ -22,52 +26,64 @@ function CardDetail() {
     navigate("/");
   }
   // 삭제 기능
-  const deleteBtn = (id) => {
+  const deleteBtn = async (id) => {
     // 삭제버튼 클릭시 취소, 확인 유효성 검사
     const deleteCheck = window.confirm("정말로 삭제하시겠습니까?");
-    if (deleteCheck) {
-      dispatch(deleteLetter(id));
-      alert("삭제되었습니다");
-      // setCardList(setDelete);
-    } else {
-      return;
+    try {
+      if (deleteCheck) {
+        await axios.delete(`http://localhost:4000/newLetter/${id}`);
+        dispatch(deleteLetter(id));
+        toast.warning("삭제되었습니다");
+        // setCardList(setDelete);
+      } else {
+        return;
+      }
+      setTimeout(() => moveMain(), 200);
+    } catch (error) {
+      console.error("Axios request failed:", error);
     }
-    // setTimeout(() => showAlert(), 200);
-    // 확인버튼 클릭 후 메인화면으로 이동
-    setTimeout(() => moveMain(), 200);
   };
 
   // 수정버튼
-  const editBtn = (id) => {
+  const editBtn = async (id) => {
     // 수정완료 버튼을 눌렀을때 확인창 띄우기
     const editCheck = window.confirm("수정을 완료하시겠습니까?");
-    if (editCheck) {
-      if (editText === clickData.content) {
-        alert("수정사항이 없습니다");
-        return;
-      } else {
-        setIsEdit(false);
-        dispatch(editLetter({ editText }));
+    try {
+      if (editCheck) {
+        if (editText === clickData.content) {
+          toast.warning("수정사항이 없습니다");
+          return;
+        } else {
+          await axios.patch(`http://localhost:4000/newLetter/${id}`, editText);
+          setIsEdit(false);
+          dispatch(editLetter({ editText }));
+        }
       }
+    } catch (error) {
+      console.error("Axios request failed:", error);
     }
   };
+
   return (
     <>
       <Container>
-        {/* <Avatar>이미지</Avatar> */}
-
         {letters
           .filter((card) => {
             return card.id === id;
           })
           .map((item) => {
             return (
-              <DetailCard key={item.id}>
-                <>
-                  <Name>{item.nickname}</Name>
-                  <Time>⏱️ {item.createdat}</Time>
-                  <To>To. {item.writedto}</To>
-                </>
+              <DetailCard>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <ProfileWrap>
+                    <Name>{item.nickname}</Name>
+                    <Time>⏱️ {item.createdAt}</Time>
+                    <To>To. {item.writedTo}</To>
+                  </ProfileWrap>
+                  <Avatar $image={defaultImg}>{item.avatar}</Avatar>
+                </div>
 
                 <TabWrapper>
                   {isEdit ? (
@@ -135,13 +151,20 @@ const DetailCard = styled.div`
   margin: auto auto 10px auto;
 `;
 
-// const Avatar = styled.div`
-//   width: 100px;
-//   height: 100px;
-//   background-color: #282828;
-//   margin: 20px auto auto 400px;
-// `;
-
+const Avatar = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  margin: 60px 60px 0 0;
+  object-fit: cover;
+  background-image: url(${({ $image }) => $image});
+`;
+const ProfileWrap = styled.div`
+  width: 400px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+`;
 const Name = styled.h3`
   margin: 60px 0 0 60px;
   font-size: 50px;
@@ -162,7 +185,7 @@ const To = styled.p`
 
 const TabWrapper = styled.div`
   display: flex;
-  margin: 10px auto 0 510px;
+  margin: 0 auto 0 510px;
 `;
 
 const Tab = styled.button`
