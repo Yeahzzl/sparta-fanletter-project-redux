@@ -3,10 +3,13 @@ import { styled } from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+// 카드리스트 유저 닉네임 작성한 사람의 닉네임으로 나오게 수정하기(로그인한 유저로 다 바뀜..)
+
 function CardList() {
   const navigate = useNavigate();
   const activeCharacter = useSelector((state) => state.characters);
   const letters = useSelector((state) => state.fanletters);
+  const userNickname = useSelector((state) => state.auth.nickname);
   let filteredList = letters.filter((item) => {
     return item.writedto === activeCharacter;
   });
@@ -35,7 +38,7 @@ function CardList() {
               }}
             >
               {/* <Avatar></Avatar> */}
-              <Name>{card.nickname}</Name>
+              <Name>{userNickname}</Name>
               <Time>{card.createdat}</Time>
               <Text>{card.content}</Text>
             </Card>
@@ -67,16 +70,16 @@ const Card = styled.div`
   height: 150px;
   margin: 15px;
   background-color: white;
-  border: 3px solid #545454;
-  border-radius: 0px 30px 0px 30px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  border: 2px solid #545454;
+  border-radius: 20px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     transition: all 0.5s;
   }
   &:active {
-    transform: scale(1.1);
+    transform: scale(1.05);
     transition: all 0.3s;
   }
 `;

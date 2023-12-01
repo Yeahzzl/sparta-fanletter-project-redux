@@ -1,12 +1,17 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { styled } from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/modules/authSlice";
 
 function Login() {
   const [loginToggle, setLoginToggle] = useState(true);
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,17 +34,65 @@ function Login() {
   };
   // 회원가입
   const onRegisterHandler = async () => {
+    // 유효성검사
+    if (userId === "") {
+      toast.warning("아이디를 입력해주세요");
+      return;
+    }
+    if (userPassword === "") {
+      toast.warning("비밀번호를 입력해주세요");
+      return;
+    }
+    if (userNickname === "") {
+      toast.warning("닉네임을 입력해주세요");
+      return;
+    }
     const newUser = {
       id: userId,
       password: userPassword,
       nickname: userNickname,
     };
     console.log(newUser);
-    const check = await axios.post(
-      "https://moneyfulpublicpolicy.co.kr/register",
-      newUser
-    );
-    console.log(check);
+    try {
+      await axios.post("https://moneyfulpublicpolicy.co.kr/register", newUser);
+      // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
+      toast.success("회원가입이 완료되었습니다");
+      // setLoginToggle(!loginToggle);
+      setUserId("");
+      setUserPassword("");
+      setUserNickname("");
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  // 로그인
+  const onLoginHandler = async () => {
+    // 유효성검사
+    if (userId === "") {
+      toast.warning("아이디를 입력해주세요");
+      return;
+    }
+    if (userPassword === "") {
+      toast.warning("비밀번호를 입력해주세요");
+      return;
+    }
+
+    const registerUser = {
+      id: userId,
+      password: userPassword,
+    };
+    try {
+      const loginResult = await axios.post(
+        "https://moneyfulpublicpolicy.co.kr/login",
+        registerUser
+      );
+      console.log("로그인유저", loginResult.data);
+      dispatch(login(loginResult.data));
+      toast.success("로그인이 완료되었습니다");
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (
@@ -64,7 +117,9 @@ function Login() {
               maxLength={15}
               onChange={passwordChangeHandler}
             />
-            <LoginButton type="submit">Login</LoginButton>
+            <LoginButton type="submit" onClick={onLoginHandler}>
+              Login
+            </LoginButton>
             <RegisterButton onClick={loginButtonHandler}>
               Sign up
             </RegisterButton>
@@ -100,6 +155,18 @@ function Login() {
             <LoginButton type="submit" onClick={onRegisterHandler}>
               Sign up
             </LoginButton>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
             <RegisterButton onClick={loginButtonHandler}>Login</RegisterButton>
           </LoginWrap>
         </LoginContainer>

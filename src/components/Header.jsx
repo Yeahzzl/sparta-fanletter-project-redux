@@ -34,6 +34,8 @@ function Header() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  background-color: white;
+  margin-bottom: 50px;
 `;
 
 const Wrapper = styled.div`
@@ -64,7 +66,7 @@ const Contents = styled.button`
   align-items: center;
   margin: 10px auto 40px auto;
   border-style: none;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
   &:hover {
     color: #818181;
@@ -91,25 +93,26 @@ const Tab = styled.button`
   width: 150px;
   height: 60px;
   font-size: 15px;
+  font-family: GmarketSansMedium;
   display: flex;
   justify-content: center;
   align-items: center;
   color: ${({ $isClick, children }) =>
     $isClick === children ? "white" : "#282828"};
   margin: 15px;
-  border: 2px solid #282828;
-  border-radius: 100px;
+  border: 1px solid #8458a6;
+  border-radius: 20px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   background-color: ${({ $isClick, children }) =>
-    $isClick === children ? "#282828" : "white"};
+    $isClick === children ? " #8458a6" : "transparent"};
   &:hover {
-    background-color: #282828;
+    background-color: #8458a6;
     color: white;
     border-style: none;
   }
   &:active {
-    background-color: #282828;
+    /* background-color: #282828; */
     transform: scale(1.1);
     transition: all 0.3s;
   }

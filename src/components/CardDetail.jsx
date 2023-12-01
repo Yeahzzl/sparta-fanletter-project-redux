@@ -119,13 +119,14 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  margin-top: 60px;
+  height: 80vh;
 `;
 
 const DetailCard = styled.div`
   /* display: flex;
   justify-content: center; */
-  border: 4px solid #282828;
+  border: 2px solid #282828;
   border-radius: 0 60px 0 60px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   background-color: white;
@@ -186,7 +187,7 @@ const TextWrapper = styled.div`
   height: 280px;
   background-color: white;
   margin: 20px auto 0 auto;
-  border: 3px solid #282828;
+  border: 2px solid #282828;
   border-radius: 0 40px 0 40px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
 `;
@@ -210,12 +211,12 @@ const Text = styled.textarea`
 const Button = styled.button`
   width: 400px;
   font-size: 20px;
-  height: 60px;
+  height: 55px;
   margin: 30px auto auto auto;
   display: flex;
   justify-content: center;
   color: #282828;
-  border: 3px solid #282828;
+  border: 2px solid #282828;
   border-radius: 100px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;

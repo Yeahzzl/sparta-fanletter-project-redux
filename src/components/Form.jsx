@@ -2,19 +2,16 @@ import React from "react";
 import { styled } from "styled-components";
 import uuid from "react-uuid";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLetter } from "../redux/modules/fanLetters";
 
 function Form() {
   const [character, setCharacter] = useState("");
   const [name, setName] = useState("");
   const [text, setText] = useState("");
+  const userNickname = useSelector((state) => state.auth.nickname);
 
   const dispatch = useDispatch();
-
-  const nameChangeHandler = (event) => {
-    setName(event.target.value);
-  };
 
   const textChangeHandler = (event) => {
     setText(event.target.value);
@@ -24,10 +21,6 @@ function Form() {
     e.preventDefault();
 
     // 유효성 검사
-    if (name === "") {
-      alert("닉네임을 입력해주세요");
-      return;
-    }
     if (text === "") {
       alert("내용을 입력해주세요");
       return;
@@ -74,13 +67,7 @@ function Form() {
         </Section>
         <Section>
           <Span>닉네임</Span>
-          <NameInput
-            value={name}
-            onChange={nameChangeHandler}
-            type="text"
-            placeholder="최대 10자 까지 작성할 수 있습니다"
-            maxLength={10}
-          />
+          <NicknameInput>{userNickname}</NicknameInput>
         </Section>
         <Section>
           <Span>내용</Span>
@@ -101,23 +88,23 @@ function Form() {
 }
 
 const Container = styled.div`
-  /* background-color: #ffa1ff; */
   width: 100%;
-  height: 600px;
+  height: 550px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: #dedede;
 `;
 
 const FormBox = styled.form`
-  width: 700px;
+  width: 100vw;
   height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #282828;
+  /* background-color: white; */
   margin: 0;
   padding: 50px;
-  border-radius: 0 50px 0 50px;
 `;
 
 const Section = styled.div`
@@ -128,52 +115,67 @@ const Section = styled.div`
 `;
 
 const Span = styled.span`
-  color: white;
+  color: #8458a6;
   font-size: 16px;
   width: 50px;
   margin: 10px;
   display: flex;
+  font-family: GmarketSansMedium;
 `;
 
 const Select = styled.select`
-  width: 320px;
+  width: 500px;
   height: 40px;
   padding: 10px;
   border-radius: 10px;
-  border-style: none;
+  border: 1px solid #8458a6;
+  font-family: GmarketSansMedium;
+  font-size: 15px;
+  color: #8458a6;
 `;
 
-const NameInput = styled.input`
-  width: 300px;
+const NicknameInput = styled.p`
+  width: 480px;
   height: 30px;
+  line-height: 30px;
   padding: 5px 10px;
   border-radius: 10px;
-  border-style: none;
+  border: 1px solid #8458a6;
+  background-color: white;
+  font-family: GmarketSansMedium;
+  font-size: 15px;
 `;
 
 const TextArea = styled.textarea`
-  width: 300px;
+  width: 480px;
   height: 150px;
   padding: 10px 10px;
   resize: none;
   border-radius: 10px;
-  border-style: none;
+  border: 1px solid #8458a6;
+  font-family: GmarketSansMedium;
+  font-size: 15px;
 `;
 
 const Button = styled.button`
-  width: 320px;
-  height: 40px;
+  width: 500px;
+  height: 50px;
   margin-left: 60px;
   border-radius: 10px;
   border-style: none;
-  background-color: white;
+  background-color: #8458a6;
+  color: white;
   cursor: pointer;
+  font-family: GmarketSansMedium;
+  font-size: 17px;
   &:hover {
-    background-color: #8458a6;
-    color: white;
+    background-color: white;
+    border: 1px solid #8458a6;
+    color: #8458a6;
   }
   &:active {
     background-color: #8458a6;
+    color: white;
     transform: scale(1.1);
     transition: all 0.3s;
   }

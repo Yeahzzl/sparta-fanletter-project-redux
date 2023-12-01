@@ -1,19 +1,26 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import { logout } from "../redux/modules/authSlice";
 
 function Navigation() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logoutButtonHandler = () => {
+    dispatch(logout());
+    // navigate("/login");
+  };
   return (
     <div>
       <NavContainer>
         <HomeButtonWrap>
           <HomeButton onClick={() => navigate("/")}>MARVEL</HomeButton>
         </HomeButtonWrap>
-        <button onClick={() => navigate("/login")}>임시로그인</button>
         <ButtonWrap>
-          <Button>마이페이지</Button>
-          <Button>로그아웃</Button>
+          <Button onClick={() => navigate("/profile")}>마이페이지</Button>
+          <Button onClick={logoutButtonHandler}>로그아웃</Button>
         </ButtonWrap>
       </NavContainer>
     </div>
@@ -27,6 +34,7 @@ const NavContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
+  background-color: white;
 `;
 const HomeButtonWrap = styled.div`
   margin-left: 100px;
