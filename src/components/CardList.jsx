@@ -1,37 +1,29 @@
-import React, { useEffect } from "react";
 import { styled } from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "../assets/defaultImg.jpg";
-import axios from "axios";
-import { addLetter } from "../redux/modules/fanLetters";
-
-// 카드리스트 유저 닉네임 작성한 사람의 닉네임으로 나오게 수정하기(로그인한 유저로 다 바뀜..)
 
 function CardList() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const activeCharacter = useSelector((state) => state.characters);
-  const letters = useSelector((state) => state.fanletters);
-  // const userNickname = useSelector((state) => state.auth.nickname);
+  const { isLoading, error, letters } = useSelector((state) => {
+    return state.fanletters;
+  });
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+
   let filteredList = letters.filter((item) => {
-    return item.writedto === activeCharacter;
+    return item.writedTo === activeCharacter;
   });
   if (activeCharacter === "") {
     filteredList = letters;
   }
-
-  //추가된 letter 그려주기
-  useEffect(() => {
-    const fetchLetter = async () => {
-      const { data } = await axios.get("http://localhost:4000/newLetter");
-      console.log("data", data);
-      data.forEach((element) => {
-        dispatch(addLetter(element));
-      });
-    };
-    fetchLetter();
-  }, []);
 
   return (
     <Container>
@@ -47,15 +39,17 @@ function CardList() {
         filteredList.map((letter) => {
           return (
             <Card
+              key={letter.id}
               onClick={() => {
                 navigate(`/detail/${letter.id}`);
-                // console.log(card.id);
               }}
             >
               <NameProfile>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <Nickname>{letter.nickname}</Nickname>
-                  <Time>{letter.createdAt}</Time>
+                  <Time>
+                    {letter.createdAt.replace("T", " ").substring(0, 19)}
+                  </Time>
                   <Toletter>{letter.writedTo}</Toletter>
                 </div>
                 <Avatar $image={defaultImg}>{letter.avatar}</Avatar>

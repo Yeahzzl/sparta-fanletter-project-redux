@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import uuid from "react-uuid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addLetter } from "../redux/modules/fanLetters";
-import { toast } from "react-toastify";
+import { __addLetters } from "../redux/modules/fanLetters";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 function Form() {
   const [character, setCharacter] = useState("");
@@ -14,9 +12,23 @@ function Form() {
   const userNickname = useSelector((state) => state.auth.nickname);
   const currentUserId = useSelector((state) => state.auth.userId);
   const currentUserAvatar = useSelector((state) => state.auth.avatar);
-
   const dispatch = useDispatch();
+  const { isLoading, error } = useSelector((state) => {
+    return state.fanletters;
+  });
 
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+  // 캐릭터 선택
+  const choose = (e) => {
+    setCharacter(e.target.value);
+  };
+  // 내용 입력
   const textChangeHandler = (event) => {
     setContent(event.target.value);
   };
@@ -41,22 +53,13 @@ function Form() {
       content,
       avatar: currentUserAvatar,
       writedTo: character,
-      createdAt: new Date().toDateString(),
+      createdAt: new Date(),
       userId: currentUserId,
     };
-    try {
-      await axios.post("http://localhost:4000/newLetter", newLetter);
-      dispatch(addLetter(newLetter));
+    dispatch(__addLetters(newLetter));
 
-      setContent("");
-      setCharacter("");
-    } catch (error) {
-      console.error("Axios request failed:", error);
-    }
-  };
-
-  const choose = (e) => {
-    setCharacter(e.target.value);
+    setContent("");
+    setCharacter("");
   };
 
   // useEffect(() => {
@@ -93,6 +96,18 @@ function Form() {
         </Section>
         <Section>
           <Button>등록하기</Button>
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </Section>
       </FormBox>
     </Container>

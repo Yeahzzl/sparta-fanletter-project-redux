@@ -2,65 +2,66 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteLetter, editLetter } from "../redux/modules/fanLetters";
-import { toast } from "react-toastify";
+import { __deleteLetters, __patchLetters } from "../redux/modules/fanLetters";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import defaultImg from "../assets/defaultImg.jpg";
 
-// 삭제 확인 후 확인 메시지 띄우기
-// function showAlert() {
-//   alert("삭제되었습니다");
-// }
 function CardDetail() {
   const dispatch = useDispatch();
-  const letters = useSelector((state) => state.fanletters);
   const navigate = useNavigate();
+  const { isLoading, error, letters } = useSelector((state) => {
+    return state.fanletters;
+  });
+  const currentUserId = useSelector((state) => state.auth.userId);
+
   const { id } = useParams();
   const clickData = letters.find((item) => {
     return item.id === id;
   });
-  const [isEdit, setIsEdit] = useState(false);
   const [editText, setEditText] = useState(clickData ? clickData.content : "");
-  function moveMain() {
+  const [isEdit, setIsEdit] = useState(false);
+
+  const moveMain = () => {
     navigate("/");
+  };
+
+  if (isLoading) {
+    return <div>로딩중</div>;
   }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+
+  // 현재 로그인유저 토큰이랑 작성자가 동일할 경우에만 삭제, 수정이 가능하도록
   // 삭제 기능
   const deleteBtn = async (id) => {
     // 삭제버튼 클릭시 취소, 확인 유효성 검사
     const deleteCheck = window.confirm("정말로 삭제하시겠습니까?");
-    try {
-      if (deleteCheck) {
-        await axios.delete(`http://localhost:4000/newLetter/${id}`);
-        dispatch(deleteLetter(id));
-        toast.warning("삭제되었습니다");
-        // setCardList(setDelete);
-      } else {
-        return;
-      }
-      setTimeout(() => moveMain(), 200);
-    } catch (error) {
-      console.error("Axios request failed:", error);
+    if (deleteCheck) {
+      dispatch(__deleteLetters(id));
+      toast.warning("삭제되었습니다");
+    } else {
+      return;
     }
+    setTimeout(() => moveMain(), 200);
   };
 
   // 수정버튼
   const editBtn = async (id) => {
     // 수정완료 버튼을 눌렀을때 확인창 띄우기
     const editCheck = window.confirm("수정을 완료하시겠습니까?");
-    try {
-      if (editCheck) {
-        if (editText === clickData.content) {
-          toast.warning("수정사항이 없습니다");
-          return;
-        } else {
-          await axios.patch(`http://localhost:4000/newLetter/${id}`, editText);
-          setIsEdit(false);
-          dispatch(editLetter({ editText }));
-        }
+    if (editCheck) {
+      if (editText === clickData.content) {
+        toast.warning("수정사항이 없습니다");
+        return;
+      } else {
+        setIsEdit(false);
+        dispatch(__patchLetters({ id, content: editText }));
+        toast.success("수정이 완료되었습니다");
+        moveMain();
       }
-    } catch (error) {
-      console.error("Axios request failed:", error);
     }
   };
 
@@ -73,13 +74,15 @@ function CardDetail() {
           })
           .map((item) => {
             return (
-              <DetailCard>
+              <DetailCard key={item.id}>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <ProfileWrap>
                     <Name>{item.nickname}</Name>
-                    <Time>⏱️ {item.createdAt}</Time>
+                    <Time>
+                      ⏱️ {item.createdAt.replace("T", " ").substring(0, 19)}
+                    </Time>
                     <To>To. {item.writedTo}</To>
                   </ProfileWrap>
                   <Avatar $image={defaultImg}>{item.avatar}</Avatar>
@@ -87,16 +90,23 @@ function CardDetail() {
 
                 <TabWrapper>
                   {isEdit ? (
-                    <Tab
-                      style={{ width: "210px" }}
-                      onClick={() => editBtn(item.id)}
-                    >
-                      수정완료
-                    </Tab>
+                    <>
+                      <Tab
+                        style={{ width: "210px" }}
+                        onClick={() => editBtn(item.id)}
+                      >
+                        수정완료
+                      </Tab>
+                      <ToastContainer position="top-center" />
+                    </>
                   ) : (
                     <>
-                      <Tab onClick={() => setIsEdit(true)}>수정</Tab>
-                      <Tab onClick={() => deleteBtn(item.id)}>삭제</Tab>
+                      {currentUserId === clickData.userId && (
+                        <>
+                          <Tab onClick={() => setIsEdit(true)}>수정</Tab>
+                          <Tab onClick={() => deleteBtn(item.id)}>삭제</Tab>
+                        </>
+                      )}
                     </>
                   )}
                 </TabWrapper>
@@ -151,7 +161,7 @@ const DetailCard = styled.div`
   margin: auto auto 10px auto;
 `;
 
-const Avatar = styled.div`
+const Avatar = styled.image`
   width: 100px;
   height: 100px;
   border-radius: 20px;

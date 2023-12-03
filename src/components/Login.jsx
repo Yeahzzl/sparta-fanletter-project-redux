@@ -57,12 +57,12 @@ function Login() {
       await axios.post("https://moneyfulpublicpolicy.co.kr/register", newUser);
       // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
       toast.success("회원가입이 완료되었습니다");
-      // setLoginToggle(!loginToggle);
+      setLoginToggle(!loginToggle);
       setUserId("");
       setUserPassword("");
       setUserNickname("");
     } catch (error) {
-      console.error("Axios request failed:", error);
+      console.log("Axios request failed:", error);
     }
   };
 
@@ -84,14 +84,14 @@ function Login() {
     };
     try {
       const loginResult = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/login",
+        "https://moneyfulpublicpolicy.co.kr/login?expiresIn=15s",
         registerUser
       );
       console.log("로그인유저", loginResult.data);
       dispatch(login(loginResult.data));
       toast.success("로그인이 완료되었습니다");
     } catch (error) {
-      console.error("Axios request failed:", error);
+      console.log("Axios request failed:", error);
     }
   };
 
@@ -120,6 +120,18 @@ function Login() {
             <LoginButton type="submit" onClick={onLoginHandler}>
               Login
             </LoginButton>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
             <RegisterButton onClick={loginButtonHandler}>
               Sign up
             </RegisterButton>
