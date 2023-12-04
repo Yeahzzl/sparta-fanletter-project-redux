@@ -12,7 +12,7 @@ function Profile() {
 
   const [profileEdit, setProfileEdit] = useState(false);
   const [profileImgUpload, setProfileImgUpload] = useState(
-    avatar || defaultImg
+    avatar === "null" || avatar === null ? defaultImg : avatar
   );
   const [profileImgUrl, setProfileImgUrl] = useState(null);
   const [editNickname, setEditNickname] = useState(nickname);
@@ -52,7 +52,7 @@ function Profile() {
       formData.append("nickname", editNickname);
       try {
         const editProfileResult = await axios.patch(
-          "https://moneyfulpublicpolicy.co.kr/profile",
+          `${process.env.REACT_APP_AUTH_SERVER}/profile`,
           formData,
           {
             headers: {

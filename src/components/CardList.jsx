@@ -10,8 +10,6 @@ function CardList() {
   const { isLoading, error, letters } = useSelector((state) => {
     return state.fanletters;
   });
-  const { userId, nickname, avatar } = useSelector((state) => state.auth);
-  const [changeProfile, setChangeProfile] = useState(false);
   if (isLoading) {
     return <div>로딩중</div>;
   }

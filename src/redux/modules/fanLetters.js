@@ -15,7 +15,7 @@ export const __getLetters = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const getResponse = await axios.get(
-        "http://localhost:4000/newLetter?_sort=createdAt&_order=desc"
+        `${process.env.REACT_APP_SERVER_URL}/newLetter?_sort=createdAt&_order=desc`
       );
       console.log("getResponse", getResponse);
       return thunkAPI.fulfillWithValue(getResponse.data);
@@ -32,7 +32,7 @@ export const __addLetters = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const addResponse = await axios.post(
-        "http://localhost:4000/newLetter",
+        `${process.env.REACT_APP_SERVER_URL}/newLetter`,
         payload
       );
       thunkAPI.dispatch(__getLetters());
@@ -51,7 +51,7 @@ export const __patchLetters = createAsyncThunk(
   async ({ id, content }, thunkAPI) => {
     try {
       const patchResponse = await axios.patch(
-        `http://localhost:4000/newLetter/${id}`,
+        `${process.env.REACT_APP_SERVER_URL}/newLetter/${id}`,
         { content }
       );
       console.log("patchResponse", patchResponse);
@@ -69,7 +69,7 @@ export const __deleteLetters = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const deleteResponse = await axios.delete(
-        `http://localhost:4000/newLetter/${payload}`
+        `${process.env.REACT_APP_SERVER_URL}/newLetter/${payload}`
       );
       console.log("deleteResponse", deleteResponse);
       return thunkAPI.fulfillWithValue(deleteResponse.data);
