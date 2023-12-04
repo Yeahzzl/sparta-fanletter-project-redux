@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "../assets/defaultImg.jpg";
+import { useState } from "react";
 
 function CardList() {
   const navigate = useNavigate();
@@ -9,7 +10,8 @@ function CardList() {
   const { isLoading, error, letters } = useSelector((state) => {
     return state.fanletters;
   });
-  const currentUser = useSelector((state) => state.auth);
+  const { userId, nickname, avatar } = useSelector((state) => state.auth);
+  const [changeProfile, setChangeProfile] = useState(false);
   if (isLoading) {
     return <div>로딩중</div>;
   }
