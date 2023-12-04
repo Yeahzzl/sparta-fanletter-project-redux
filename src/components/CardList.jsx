@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "../assets/defaultImg.jpg";
-import { useState } from "react";
 
 function CardList() {
   const navigate = useNavigate();
