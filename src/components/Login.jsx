@@ -52,7 +52,6 @@ function Login() {
       password: userPassword,
       nickname: userNickname,
     };
-    console.log(newUser);
     try {
       await axios.post("https://moneyfulpublicpolicy.co.kr/register", newUser);
       // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
@@ -84,10 +83,9 @@ function Login() {
     };
     try {
       const loginResult = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/login?expiresIn=15s",
+        "https://moneyfulpublicpolicy.co.kr/login",
         registerUser
       );
-      console.log("로그인유저", loginResult.data);
       dispatch(login(loginResult.data));
       toast.success("로그인이 완료되었습니다");
     } catch (error) {

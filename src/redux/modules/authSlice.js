@@ -27,7 +27,8 @@ const authSlice = createSlice({
       state.isLogin = false;
     },
     editProfile: (state, action) => {
-      const { nickname, avatar } = action.payload;
+      const { nickname, avatar } = action.payload.data;
+
       if (nickname) {
         localStorage.setItem("nickname", nickname);
         state.nickname = nickname;

@@ -9,7 +9,7 @@ function CardList() {
   const { isLoading, error, letters } = useSelector((state) => {
     return state.fanletters;
   });
-
+  const currentUser = useSelector((state) => state.auth);
   if (isLoading) {
     return <div>로딩중</div>;
   }
@@ -52,7 +52,8 @@ function CardList() {
                   </Time>
                   <Toletter>{letter.writedTo}</Toletter>
                 </div>
-                <Avatar $image={defaultImg}>{letter.avatar}</Avatar>
+                <Avatar src={defaultImg} />
+                {/* {letter.avatar}</Avatar> */}
               </NameProfile>
               <Text>{letter.content}</Text>
             </Card>
@@ -69,7 +70,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border-top: 1px solid #545454;
+  /* border-top: 1px solid #545454; */
   padding-top: 50px;
   margin-bottom: 50px;
 `;
@@ -108,12 +109,12 @@ const Nickname = styled.p`
   color: #8458a6;
 `;
 
-const Avatar = styled.image`
+const Avatar = styled.img`
   width: 70px;
   height: 70px;
   border-radius: 100px;
   object-fit: cover;
-  background-image: url(${({ $image }) => $image});
+  /* background-image: url(${({ $image }) => $image}); */
 `;
 
 const Time = styled.p`
@@ -128,9 +129,11 @@ const Toletter = styled.p`
 
 const Text = styled.p`
   font-size: 15px;
-  margin: 7px;
-  border-top: 1px solid #545454;
-  padding-top: 20px;
+  margin: 0;
+  /* border-top: 1px solid #545454; */
+  background-color: #dedede;
+  border-radius: 10px;
+  padding: 18px 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

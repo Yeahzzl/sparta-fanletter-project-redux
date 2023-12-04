@@ -10,15 +10,6 @@
       "userId": "dpwl111"
     },
     {
-      "id": "92df845f-a70b-d580-f70c-cdd16fd5902e",
-      "nickname": "어벤져스",
-      "content": "1111",
-      "avatar": "null",
-      "writedTo": "캡틴아메리카",
-      "createdAt": "2023-12-03T08:55:18.739Z",
-      "userId": "dpwl111"
-    },
-    {
       "id": "1e70b736-ddc7-350e-4214-1b231093a62f",
       "nickname": "어벤져스",
       "content": "최신순으로 정렬하기",
@@ -53,6 +44,24 @@
       "writedTo": "캡틴아메리카",
       "createdAt": "2023-12-03T10:58:39.166Z",
       "userId": "helloworld"
+    },
+    {
+      "id": "d79b0940-48c0-18aa-26cc-abd948bcc065",
+      "nickname": "피곤쓰",
+      "content": "어벤져스 인피니티!!!!",
+      "avatar": null,
+      "writedTo": "닥터스트레인지",
+      "createdAt": "2023-12-03T17:57:25.146Z",
+      "userId": "dhorkfl111"
+    },
+    {
+      "id": "ebb82351-c827-ad90-fe20-de763a8d885d",
+      "nickname": "하하하하하",
+      "content": "아아아바뀌나",
+      "avatar": null,
+      "writedTo": "블랙위도우",
+      "createdAt": "2023-12-04T02:29:16.810Z",
+      "userId": "qazwsx123"
     }
   ]
 }

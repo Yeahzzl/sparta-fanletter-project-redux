@@ -85,7 +85,8 @@ function CardDetail() {
                     </Time>
                     <To>To. {item.writedTo}</To>
                   </ProfileWrap>
-                  <Avatar $image={defaultImg}>{item.avatar}</Avatar>
+                  <Avatar src={defaultImg} />
+                  {/* {item.avatar}</Avatar> */}
                 </div>
 
                 <TabWrapper>
@@ -161,13 +162,13 @@ const DetailCard = styled.div`
   margin: auto auto 10px auto;
 `;
 
-const Avatar = styled.image`
-  width: 100px;
-  height: 100px;
+const Avatar = styled.img`
+  width: 120px;
+  height: 120px;
   border-radius: 20px;
   margin: 60px 60px 0 0;
   object-fit: cover;
-  background-image: url(${({ $image }) => $image});
+  /* background-image: url(${({ $image }) => $image}); */
 `;
 const ProfileWrap = styled.div`
   width: 400px;
@@ -178,7 +179,7 @@ const ProfileWrap = styled.div`
 const Name = styled.h3`
   margin: 60px 0 0 60px;
   font-size: 50px;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const Time = styled.p`
