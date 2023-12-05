@@ -5,7 +5,7 @@ function Footer() {
   return (
     <div>
       <Container>
-        <p>Copyright</p>
+        <p>copyright</p>
       </Container>
     </div>
   );

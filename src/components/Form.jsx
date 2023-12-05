@@ -62,10 +62,6 @@ function Form() {
     setCharacter("");
   };
 
-  // useEffect(() => {
-  //   fetchLetter();
-  // }, []);
-
   return (
     <Container>
       <FormBox onSubmit={onSubmitHandler}>

@@ -10,7 +10,6 @@ function Navigation() {
 
   const logoutButtonHandler = () => {
     dispatch(logout());
-    // navigate("/login");
   };
   return (
     <div>
