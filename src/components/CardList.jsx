@@ -52,7 +52,6 @@ function CardList() {
                   <Toletter>{letter.writedTo}</Toletter>
                 </div>
                 <Avatar src={defaultImg} />
-                {/* {letter.avatar}</Avatar> */}
               </NameProfile>
               <Text>{letter.content}</Text>
             </Card>
@@ -113,7 +112,6 @@ const Avatar = styled.img`
   height: 70px;
   border-radius: 100px;
   object-fit: cover;
-  /* background-image: url(${({ $image }) => $image}); */
 `;
 
 const Time = styled.p`

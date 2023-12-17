@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/modules/authSlice";
@@ -32,51 +31,67 @@ function Login() {
   const nicknameChangeHandler = (e) => {
     setUserNickname(e.target.value);
   };
+
+  const inValidRegister =
+    userId !== "" && userPassword !== "" && userNickname !== "";
+  const inValidLogin = userId !== "" && userPassword !== "";
+
   // 회원가입
   const onRegisterHandler = async () => {
     // 유효성검사
-    if (userId === "") {
-      toast.warning("아이디를 입력해주세요");
+    // if (userId === "") {
+    //   toast.warning("아이디를 입력해주세요");
+    //   return;
+    // }
+    // if (userPassword === "") {
+    //   toast.warning("비밀번호를 입력해주세요");
+    //   return;
+    // }
+    // if (userNickname === "") {
+    //   toast.warning("닉네임을 입력해주세요");
+    //   return;
+    // }
+    if (!inValidRegister) {
       return;
     }
-    if (userPassword === "") {
-      toast.warning("비밀번호를 입력해주세요");
-      return;
-    }
-    if (userNickname === "") {
-      toast.warning("닉네임을 입력해주세요");
-      return;
-    }
+
     const newUser = {
       id: userId,
       password: userPassword,
       nickname: userNickname,
     };
     try {
-      await axios.post(
+      const { data } = await axios.post(
         `${process.env.REACT_APP_AUTH_SERVER}/register`,
         newUser
       );
+      console.log(data);
       // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
-      toast.success("회원가입이 완료되었습니다");
-      setLoginToggle(!loginToggle);
-      setUserId("");
-      setUserPassword("");
-      setUserNickname("");
+      if (data.success) {
+        toast.success("회원가입이 완료되었습니다");
+        setLoginToggle(!loginToggle);
+        setUserId("");
+        setUserPassword("");
+        setUserNickname("");
+      }
     } catch (error) {
       console.log("Axios request failed:", error);
+      toast.error(error.response.data.message);
     }
   };
 
   // 로그인
   const onLoginHandler = async () => {
     // 유효성검사
-    if (userId === "") {
-      toast.warning("아이디를 입력해주세요");
-      return;
-    }
-    if (userPassword === "") {
-      toast.warning("비밀번호를 입력해주세요");
+    // if (userId === "") {
+    //   toast.warning("아이디를 입력해주세요");
+    //   return;
+    // }
+    // if (userPassword === "") {
+    //   toast.warning("비밀번호를 입력해주세요");
+    //   return;
+    // }
+    if (!inValidLogin) {
       return;
     }
 
@@ -85,14 +100,17 @@ function Login() {
       password: userPassword,
     };
     try {
-      const loginResult = await axios.post(
+      const { data } = await axios.post(
         `${process.env.REACT_APP_AUTH_SERVER}/login`,
         registerUser
       );
-      dispatch(login(loginResult.data));
-      toast.success("로그인이 완료되었습니다");
+      if (data.success) {
+        dispatch(login(data));
+        toast.success("로그인이 완료되었습니다");
+      }
     } catch (error) {
       console.log("Axios request failed:", error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -118,21 +136,13 @@ function Login() {
               maxLength={15}
               onChange={passwordChangeHandler}
             />
-            <LoginButton type="submit" onClick={onLoginHandler}>
+            <LoginButton
+              $disabled={!inValidLogin}
+              type="submit"
+              onClick={onLoginHandler}
+            >
               Login
             </LoginButton>
-            <ToastContainer
-              position="top-center"
-              autoClose={2000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
             <RegisterButton onClick={loginButtonHandler}>
               Sign up
             </RegisterButton>
@@ -165,21 +175,13 @@ function Login() {
               maxLength={10}
               onChange={nicknameChangeHandler}
             />
-            <LoginButton type="submit" onClick={onRegisterHandler}>
+            <LoginButton
+              $disabled={!inValidRegister}
+              type="submit"
+              onClick={onRegisterHandler}
+            >
               Sign up
             </LoginButton>
-            <ToastContainer
-              position="top-center"
-              autoClose={2000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
             <RegisterButton onClick={loginButtonHandler}>Login</RegisterButton>
           </LoginWrap>
         </LoginContainer>
@@ -240,7 +242,8 @@ const LoginButton = styled.button`
   height: 50px;
   margin: 30px;
   padding: 0;
-  background-color: #8458a6;
+  background-color: ${(props) =>
+    props.$disabled === true ? "#a4a4a4" : "#8458a6"};
   color: white;
   border-style: none;
   border-radius: 10px;

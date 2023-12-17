@@ -3,8 +3,7 @@ import uuid from "react-uuid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { __addLetters } from "../redux/modules/fanLetters";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function Form() {
   const [character, setCharacter] = useState("");
@@ -92,18 +91,6 @@ function Form() {
         </Section>
         <Section>
           <Button>등록하기</Button>
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
         </Section>
       </FormBox>
     </Container>

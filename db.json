@@ -62,6 +62,15 @@
       "writedTo": "블랙위도우",
       "createdAt": "2023-12-04T02:29:16.810Z",
       "userId": "qazwsx123"
+    },
+    {
+      "id": "19a41b61-4158-73a7-d370-ecbb610eddf6",
+      "nickname": "천둥의신 토르!",
+      "content": "아이러브 토르",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-17/d9811cfb-a75e-402f-97e9-f439aedcd46d.jpg",
+      "writedTo": "토르",
+      "createdAt": "2023-12-17T09:03:35.412Z",
+      "userId": "dhorkfl123"
     }
   ]
 }

@@ -5,7 +5,7 @@ function Footer() {
   return (
     <div>
       <Container>
-        <p>copyright</p>
+        <p>© 2023.Avengers.All rights reserved</p>
       </Container>
     </div>
   );
