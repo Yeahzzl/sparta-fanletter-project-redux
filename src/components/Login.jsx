@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/modules/authSlice";
+import { authApi } from "../api/indexApi";
 
 function Login() {
   const [loginToggle, setLoginToggle] = useState(true);
@@ -38,19 +38,6 @@ function Login() {
 
   // 회원가입
   const onRegisterHandler = async () => {
-    // 유효성검사
-    // if (userId === "") {
-    //   toast.warning("아이디를 입력해주세요");
-    //   return;
-    // }
-    // if (userPassword === "") {
-    //   toast.warning("비밀번호를 입력해주세요");
-    //   return;
-    // }
-    // if (userNickname === "") {
-    //   toast.warning("닉네임을 입력해주세요");
-    //   return;
-    // }
     if (!inValidRegister) {
       return;
     }
@@ -61,10 +48,7 @@ function Login() {
       nickname: userNickname,
     };
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_AUTH_SERVER}/register`,
-        newUser
-      );
+      const { data } = await authApi.post("/register", newUser);
       console.log(data);
       // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
       if (data.success) {
@@ -82,16 +66,8 @@ function Login() {
 
   // 로그인
   const onLoginHandler = async () => {
-    // 유효성검사
-    // if (userId === "") {
-    //   toast.warning("아이디를 입력해주세요");
-    //   return;
-    // }
-    // if (userPassword === "") {
-    //   toast.warning("비밀번호를 입력해주세요");
-    //   return;
-    // }
     if (!inValidLogin) {
+      console.log("로그인클릭");
       return;
     }
 
@@ -100,10 +76,7 @@ function Login() {
       password: userPassword,
     };
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_AUTH_SERVER}/login`,
-        registerUser
-      );
+      const { data } = await authApi.post("/login?expiresIn=10s", registerUser);
       if (data.success) {
         dispatch(login(data));
         toast.success("로그인이 완료되었습니다");
@@ -137,6 +110,7 @@ function Login() {
               onChange={passwordChangeHandler}
             />
             <LoginButton
+              disabled={!inValidLogin}
               $disabled={!inValidLogin}
               type="submit"
               onClick={onLoginHandler}
@@ -176,6 +150,7 @@ function Login() {
               onChange={nicknameChangeHandler}
             />
             <LoginButton
+              disabled={!inValidRegister}
               $disabled={!inValidRegister}
               type="submit"
               onClick={onRegisterHandler}

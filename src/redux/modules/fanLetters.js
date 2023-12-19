@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { jsonApi } from "../../api/indexApi";
 
 // 초기 상태값
 const initialState = {
@@ -14,8 +14,8 @@ export const __getLetters = createAsyncThunk(
   "getLetters",
   async (payload, thunkAPI) => {
     try {
-      const getResponse = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/newLetter?_sort=createdAt&_order=desc`
+      const getResponse = await jsonApi.get(
+        `/newLetter?_sort=createdAt&_order=desc`
       );
       console.log("getResponse", getResponse);
       return thunkAPI.fulfillWithValue(getResponse.data);
@@ -31,10 +31,7 @@ export const __addLetters = createAsyncThunk(
   "addLetters",
   async (payload, thunkAPI) => {
     try {
-      const addResponse = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/newLetter`,
-        payload
-      );
+      const addResponse = await jsonApi.post("/newLetter", payload);
       thunkAPI.dispatch(__getLetters());
       console.log("addResponse", addResponse);
       return thunkAPI.fulfillWithValue(addResponse.data);
@@ -50,10 +47,9 @@ export const __patchLetters = createAsyncThunk(
   "patchLetters",
   async ({ id, content }, thunkAPI) => {
     try {
-      const patchResponse = await axios.patch(
-        `${process.env.REACT_APP_SERVER_URL}/newLetter/${id}`,
-        { content }
-      );
+      const patchResponse = await jsonApi.patch(`/newLetter/${id}`, {
+        content,
+      });
       console.log("patchResponse", patchResponse);
       return thunkAPI.fulfillWithValue(patchResponse.data);
     } catch (error) {
@@ -68,9 +64,7 @@ export const __deleteLetters = createAsyncThunk(
   "deleteLetters",
   async (payload, thunkAPI) => {
     try {
-      const deleteResponse = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URL}/newLetter/${payload}`
-      );
+      const deleteResponse = await jsonApi.delete(`/newLetter/${payload}`);
       console.log("deleteResponse", deleteResponse);
       return thunkAPI.fulfillWithValue(deleteResponse.data);
     } catch (error) {

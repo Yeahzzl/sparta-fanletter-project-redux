@@ -71,6 +71,15 @@
       "writedTo": "토르",
       "createdAt": "2023-12-17T09:03:35.412Z",
       "userId": "dhorkfl123"
+    },
+    {
+      "id": "cdafa9f2-9e85-448c-bbdd-fa0f6b9afb96",
+      "nickname": "천둥의신 토르!",
+      "content": "응원합니당!!!",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-17/d9811cfb-a75e-402f-97e9-f439aedcd46d.jpg",
+      "writedTo": "블랙위도우",
+      "createdAt": "2023-12-17T14:26:24.812Z",
+      "userId": "dhorkfl123"
     }
   ]
 }
