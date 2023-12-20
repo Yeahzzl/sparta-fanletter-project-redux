@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "styled-components";
 import defaultImg from "../assets/defaultImg.jpg";
-import axios from "axios";
-import { editProfile } from "../redux/modules/authSlice";
+import { toast } from "react-toastify";
+import { __editProfile } from "../redux/modules/authSlice";
 
 function Profile() {
   const { userId, nickname, avatar } = useSelector((state) => state.auth);
 
-  const currentUserToken = localStorage.getItem("accessToken");
+  // const currentUserToken = localStorage.getItem("accessToken");
 
   const [profileEdit, setProfileEdit] = useState(false);
   const [profileImgUpload, setProfileImgUpload] = useState(
@@ -26,14 +26,18 @@ function Profile() {
   const profileCancelHandler = () => {
     setProfileEdit(false);
     setEditNickname(nickname);
+    setProfileImgUpload(avatar);
     return;
   };
 
   const imageChangeHandler = (event) => {
     const file = event.target.files[0];
+    if (file.size > 1024 * 1024) {
+      return toast.warn("최대 1MB까지 업로드 가능합니다");
+    }
     const imageUrl = URL.createObjectURL(file);
     setProfileImgUrl(file || imageUrl);
-    const reader = new FileReader(); //화면에 프로필 사진 표시
+    const reader = new FileReader(); // 화면에 프로필 사진 표시
     reader.onload = () => {
       if (reader.readyState === 2) {
         setProfileImgUpload(reader.result);
@@ -42,29 +46,19 @@ function Profile() {
     reader.readAsDataURL(file);
   };
 
-  const editProfileResultHandler = async () => {
+  const editProfileResultHandler = () => {
     const editCheck = window.confirm("프로필을 수정하시겠습니까?");
     if (editCheck) {
       setProfileEdit(false);
-
       const formData = new FormData();
-      formData.append("avatar", profileImgUrl);
-      formData.append("nickname", editNickname);
-      try {
-        const editProfileResult = await axios.patch(
-          `${process.env.REACT_APP_AUTH_SERVER}/profile`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${currentUserToken}`,
-            },
-          }
-        );
-        dispatch(editProfile(editProfileResult));
-      } catch (error) {
-        console.log("Axios request failed:", error);
+      if (editNickname) {
+        formData.append("nickname", editNickname);
       }
+      if (profileImgUrl !== avatar) {
+        formData.append("avatar", profileImgUrl);
+      }
+      toast.success("프로필 변경이 완료되었습니다");
+      dispatch(__editProfile(formData));
     } else {
       return;
     }
@@ -88,7 +82,6 @@ function Profile() {
 
             <AvatarImgWrap htmlFor="inputFile">
               <AvatarImg src={profileImgUpload || avatar} />
-              {/* {item.avatar} */}
             </AvatarImgWrap>
             {profileEdit ? (
               <UserNickname
@@ -102,16 +95,17 @@ function Profile() {
             ) : (
               <UserNickname disabled={profileEdit === false} value={nickname} />
             )}
-
             <UserId>{userId}</UserId>
             <TabWrapper>
               {profileEdit ? (
                 <>
-                  <EditButton onClick={editProfileResultHandler}>
+                  <EditButton
+                    onClick={editProfileResultHandler}
+                    disabled={!editNickname && profileImgUrl === avatar}
+                  >
                     수정완료
                   </EditButton>
                   <EditButton onClick={profileCancelHandler}>취소</EditButton>
-                  {/* <ToastContainer position="top-center" /> */}
                 </>
               ) : (
                 <>

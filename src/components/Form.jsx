@@ -53,8 +53,10 @@ function Form() {
       avatar: currentUserAvatar,
       writedTo: character,
       createdAt: new Date(),
+      // Date.now()
       userId: currentUserId,
     };
+
     dispatch(__addLetters(newLetter));
 
     setContent("");

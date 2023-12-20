@@ -1,67 +1,22 @@
 {
   "newLetter": [
     {
-      "id": "dce4ed97-665a-e794-7a07-1ba4c0686f4a",
-      "nickname": "어벤져스",
-      "content": "수정을 하고싶어요",
-      "avatar": "null",
-      "writedTo": "토르",
-      "createdAt": "2023-12-03T08:55:00.786Z",
-      "userId": "dpwl111"
-    },
-    {
-      "id": "1e70b736-ddc7-350e-4214-1b231093a62f",
-      "nickname": "어벤져스",
-      "content": "최신순으로 정렬하기",
-      "avatar": "null",
-      "writedTo": "닥터스트레인지",
-      "createdAt": "2023-12-03T08:55:29.569Z",
-      "userId": "dpwl111"
-    },
-    {
-      "id": "14089fa2-f059-69c9-0420-38a10e3620ff",
-      "nickname": "어벤져스",
-      "content": "최신순!!!!!!!!!!!!!!!",
-      "avatar": "null",
-      "writedTo": "블랙위도우",
-      "createdAt": "2023-12-03T09:29:04.516Z",
-      "userId": "dpwl111"
-    },
-    {
       "id": "c669d166-8f76-4170-e89e-76e59e2d9d59",
-      "nickname": "어벤져스",
+      "nickname": "에지에오",
       "content": "이게 일빠",
-      "avatar": "null",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-20/54000190-a029-4211-9f3d-bc07d471b489.jpg",
       "writedTo": "캡틴아메리카",
       "createdAt": "2023-12-03T09:34:32.623Z",
       "userId": "dpwl111"
     },
     {
       "id": "f83ef6fe-6f59-0a30-11c6-e134c3ae3bcc",
-      "nickname": "안녕하세요",
+      "nickname": "헬로",
       "content": "오 되나!!!",
-      "avatar": "null",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-20/d89d3f30-2c7f-4f20-abbd-5297c6587abe.jpg",
       "writedTo": "캡틴아메리카",
       "createdAt": "2023-12-03T10:58:39.166Z",
       "userId": "helloworld"
-    },
-    {
-      "id": "d79b0940-48c0-18aa-26cc-abd948bcc065",
-      "nickname": "피곤쓰",
-      "content": "어벤져스 인피니티!!!!",
-      "avatar": null,
-      "writedTo": "닥터스트레인지",
-      "createdAt": "2023-12-03T17:57:25.146Z",
-      "userId": "dhorkfl111"
-    },
-    {
-      "id": "ebb82351-c827-ad90-fe20-de763a8d885d",
-      "nickname": "하하하하하",
-      "content": "아아아바뀌나",
-      "avatar": null,
-      "writedTo": "블랙위도우",
-      "createdAt": "2023-12-04T02:29:16.810Z",
-      "userId": "qazwsx123"
     },
     {
       "id": "19a41b61-4158-73a7-d370-ecbb610eddf6",
@@ -80,6 +35,42 @@
       "writedTo": "블랙위도우",
       "createdAt": "2023-12-17T14:26:24.812Z",
       "userId": "dhorkfl123"
+    },
+    {
+      "id": "8282ed80-3995-4676-fe48-3a2f5da0dde4",
+      "nickname": "천둥의신 토르!",
+      "content": "이야야",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-17/d9811cfb-a75e-402f-97e9-f439aedcd46d.jpg",
+      "writedTo": "토르",
+      "createdAt": "2023-12-20T02:41:38.113Z",
+      "userId": "dhorkfl123"
+    },
+    {
+      "id": "3e7bed56-3b2c-3139-71c2-680c4ee9823a",
+      "nickname": "천둥의신 토르!",
+      "content": "프로필이 뭘까요",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-17/d9811cfb-a75e-402f-97e9-f439aedcd46d.jpg",
+      "writedTo": "토르",
+      "createdAt": "2023-12-20T06:47:45.189Z",
+      "userId": "dhorkfl123"
+    },
+    {
+      "id": "44caa9b6-1c09-ddcc-2c45-71a101843b2d",
+      "nickname": "토르에유",
+      "content": "프로필",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-20/6152a537-28ac-4e0d-8303-d0ea2653666a.jpg",
+      "writedTo": "캡틴아메리카",
+      "createdAt": "2023-12-20T14:23:51.263Z",
+      "userId": "dhorkfl123"
+    },
+    {
+      "id": "5f1f0665-5460-2beb-2349-54040a5734ad",
+      "nickname": "헬로",
+      "content": "아니 닥터스트레인지한테 카드가없다구?",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-20/d89d3f30-2c7f-4f20-abbd-5297c6587abe.jpg",
+      "writedTo": "닥터스트레인지",
+      "createdAt": "2023-12-20T16:25:45.993Z",
+      "userId": "helloworld"
     }
   ]
 }

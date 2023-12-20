@@ -17,7 +17,7 @@ function CardList() {
     return <div>{error.message}</div>;
   }
 
-  let filteredList = letters.filter((item) => {
+  let filteredList = letters?.filter((item) => {
     return item.writedTo === activeCharacter;
   });
   if (activeCharacter === "") {
@@ -26,7 +26,7 @@ function CardList() {
 
   return (
     <Container>
-      {filteredList.length === 0 ? (
+      {filteredList?.length === 0 ? (
         <Card>
           <BlankText>
             🙅🏻‍♀️ {activeCharacter}에게 등록된 카드가 없습니다 🙅🏻‍♀️
@@ -35,7 +35,7 @@ function CardList() {
           </BlankText>
         </Card>
       ) : (
-        filteredList.map((letter) => {
+        filteredList?.map((letter) => {
           return (
             <Card
               key={letter.id}
@@ -51,7 +51,14 @@ function CardList() {
                   </Time>
                   <Toletter>{letter.writedTo}</Toletter>
                 </div>
-                <Avatar src={defaultImg} />
+
+                <Avatar
+                  src={
+                    letter.avatar === "null" || letter.avatar === null
+                      ? defaultImg
+                      : letter.avatar
+                  }
+                />
               </NameProfile>
               <Text>{letter.content}</Text>
             </Card>

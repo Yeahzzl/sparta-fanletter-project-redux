@@ -1,6 +1,11 @@
 import axios from "axios";
+import { logout } from "../redux/modules/authSlice";
 import { toast } from "react-toastify";
 
+let store;
+import("../redux/config/configStore").then((module) => {
+  store = module.default();
+});
 export const authApi = axios.create({
   baseURL: process.env.REACT_APP_AUTH_SERVER,
   headers: {
@@ -21,6 +26,7 @@ authApi.interceptors.request.use(
     if (accessToken) {
       config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
+    return config;
   },
   (error) => {
     return Promise.reject(error);
@@ -32,8 +38,14 @@ authApi.interceptors.response.use(
     return response;
   },
   (error) => {
-    toast.error(error.data.message);
-    if (error.data.message === "토큰이 만료되었습니다. 다시 로그인 해주세요.") {
+    console.log("error", error);
+    toast.error(error.response.data.message);
+    if (
+      error.response.data.message ===
+      "토큰이 만료되었습니다. 다시 로그인 해주세요."
+    ) {
+      // 로그아웃 처리
+      return store.dispatch(logout());
     }
     return Promise.reject(error);
   }

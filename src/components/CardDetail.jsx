@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { __deleteLetters, __patchLetters } from "../redux/modules/fanLetters";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import defaultImg from "../assets/defaultImg.jpg";
 
@@ -69,10 +69,10 @@ function CardDetail() {
     <>
       <Container>
         {letters
-          .filter((card) => {
+          ?.filter((card) => {
             return card.id === id;
           })
-          .map((item) => {
+          ?.map((item) => {
             return (
               <DetailCard key={item.id}>
                 <div
@@ -85,10 +85,14 @@ function CardDetail() {
                     </Time>
                     <To>To. {item.writedTo}</To>
                   </ProfileWrap>
-                  <Avatar src={defaultImg} />
-                  {/* {item.avatar}</Avatar> */}
+                  <Avatar
+                    src={
+                      item.avatar === "null" || item.avatar === null
+                        ? defaultImg
+                        : item.avatar
+                    }
+                  />
                 </div>
-
                 <TabWrapper>
                   {isEdit ? (
                     <>
@@ -98,7 +102,6 @@ function CardDetail() {
                       >
                         수정완료
                       </Tab>
-                      <ToastContainer position="top-center" />
                     </>
                   ) : (
                     <>

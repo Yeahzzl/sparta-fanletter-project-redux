@@ -17,6 +17,9 @@ function Login() {
   };
 
   const loginButtonHandler = () => {
+    setUserId("");
+    setUserPassword("");
+    setUserNickname("");
     setLoginToggle(!loginToggle);
   };
 
@@ -50,40 +53,36 @@ function Login() {
     try {
       const { data } = await authApi.post("/register", newUser);
       console.log(data);
-      // 가입후 로그인페이지로 넘어가게하면 토스티파이 기능 안먹음
       if (data.success) {
         toast.success("회원가입이 완료되었습니다");
-        setLoginToggle(!loginToggle);
         setUserId("");
         setUserPassword("");
-        setUserNickname("");
+        setLoginToggle(!loginToggle);
       }
     } catch (error) {
       console.log("Axios request failed:", error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 
   // 로그인
   const onLoginHandler = async () => {
     if (!inValidLogin) {
-      console.log("로그인클릭");
       return;
     }
-
     const registerUser = {
       id: userId,
       password: userPassword,
     };
     try {
-      const { data } = await authApi.post("/login?expiresIn=10s", registerUser);
+      const { data } = await authApi.post("/login?expiresIn=60m", registerUser);
       if (data.success) {
         dispatch(login(data));
         toast.success("로그인이 완료되었습니다");
       }
     } catch (error) {
       console.log("Axios request failed:", error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 
